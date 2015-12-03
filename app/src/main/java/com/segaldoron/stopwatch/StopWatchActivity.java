@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
+import android.os.Handler;
 
 public class StopWatchActivity extends AppCompatActivity {
     private int seconds = 0;
@@ -15,11 +16,12 @@ public class StopWatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stop_watch);
+        runTimer();
     }
 
     public void onClickStart(View view) {
         running = true;
-        runTimer();
+
     }
 
     public void onClickStop(View view) {
@@ -39,7 +41,6 @@ public class StopWatchActivity extends AppCompatActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Runn...inside");
                 int hours = seconds / 3600;
                 int minutes = (seconds % 3600) / 60;
                 int secs = seconds % 60;
