@@ -11,6 +11,7 @@ import android.os.Handler;
 public class StopWatchActivity extends AppCompatActivity {
     private int seconds = 0;
     private boolean running;
+    private boolean wasRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,10 +19,12 @@ public class StopWatchActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             this.seconds = savedInstanceState.getInt("seconds");
             this.running = savedInstanceState.getBoolean("running");
+            this.wasRunning = savedInstanceState.getBoolean("wasRunning");
         }
         setContentView(R.layout.activity_stop_watch);
         runTimer();
     }
+
 
     public void onClickStart(View view) {
         running = true;
@@ -65,5 +68,39 @@ public class StopWatchActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("seconds", seconds);
         savedInstanceState.putBoolean("running", running);
+        savedInstanceState.putBoolean("wasRunning", wasRunning);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.running = false;
+        this.wasRunning = true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (this.wasRunning){
+            this.running = true;
+        }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        System.out.println("Puase");
+        wasRunning = running;
+        running = false;
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        System.out.println("Resume");
+        if (wasRunning) {
+            running = true;
+        }
+    }
+
 }
